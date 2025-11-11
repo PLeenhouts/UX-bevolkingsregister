@@ -182,7 +182,11 @@ app.post('/api/kind', (req, res) => {
 
 // Frontend routes
 app.get('/Burger', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Burger.html')));
-app.get('/Ambtenaar', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Ambtenaar.html')));
-app.get('/', (req, res) => res.send('<a href="/Burger">Burger</a> | <a href="/Ambtenaar">Ambtenaar</a>'));
+app.get('/Ambtenaar/start', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Ambtenaar-Start.html')));
+app.get('/Ambtenaar-burger', (req, res) =>res.sendFile(path.join(__dirname, 'public', 'Ambtenaar-Burger.html')));
+app.get('/Ambtenaar-huwelijk', (req, res) =>  res.sendFile(path.join(__dirname, 'public', 'Ambtenaar-Huwelijk.html')));
+app.get('/Ambtenaar-kind', (req, res) =>  res.sendFile(path.join(__dirname, 'public', 'Ambtenaar-Kind.html')));
+app.get('/', (req, res) => res.send('<a href="/Burger">Burger</a> | <a href="/Ambtenaar/start">Ambtenaar</a>'));
 
 app.listen(port, () => console.log(`Server draait op http://localhost:${port}`));
+
