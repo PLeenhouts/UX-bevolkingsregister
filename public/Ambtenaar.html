@@ -38,6 +38,28 @@
   <h2>Bestaande Burgers</h2>
   <ul id="Burgers"></ul>
 
+<dialog id="confirmDialog">
+  <form method="dialog" id="confirmForm" style="min-width: 420px">
+    <h3>Gegevens controleren</h3>
+    <p>Klopt alles? Bevestig om deze burger toe te voegen.</p>
+
+    <div style="display:grid;grid-template-columns:140px 1fr;gap:.5rem 1rem;margin:.75rem 0;">
+      <strong>Voornaam</strong><span id="cVoornaam"></span>
+      <strong>Achternaam</strong><span id="cAchternaam"></span>
+      <strong>Geboortedatum</strong><span id="cGeboortedatum"></span>
+      <strong>DNA-code</strong><span id="cDNA"></span>
+      <strong>Familiecode</strong><span id="cFamilie"></span>
+    </div>
+
+    <menu style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem;">
+      <button type="button" id="cancelAdd">Annuleren</button>
+      <button type="submit" id="confirmAdd">Bevestig toevoegen</button>
+    </menu>
+  </form>
+</dialog>
+
+  
   <script src="ambtenaar.js"></script>
 </body>
 </html>
+

@@ -32,13 +32,64 @@ function displayBurgers(burgers) {
   });
 } 
 
-// Nieuwe burger toevoegen
+// Nieuwe burger toevoegen met bevestiging
+const confirmDialog = document.getElementById('confirmDialog');
+const cancelAddBtn  = document.getElementById('cancelAdd');
+const confirmAddBtn = document.getElementById('confirmAdd');
+
+const cVoornaam   = document.getElementById('cVoornaam');
+const cAchternaam = document.getElementById('cAchternaam');
+const cGebdat     = document.getElementById('cGeboortedatum');
+const cDNA        = document.getElementById('cDNA');
+const cFamilie    = document.getElementById('cFamilie');
+
+let pendingBurgerData = null;
+
 form.addEventListener('submit', e => {
   e.preventDefault();
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
 
-  fetch('/api/burgers', {
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+   if (!data.Voornaam || !data.Achternaam || !data.Geboortedatum || !data.DNA_code || !data.Familie_code) {
+    alert('Alle velden zijn verplicht');
+    return;
+  }
+
+  cVoornaam.textContent   = data.Voornaam;
+  cAchternaam.textContent = data.Achternaam;
+  cGebdat.textContent     = data.Geboortedatum;
+  cDNA.textContent        = data.DNA_code;
+  cFamilie.textContent    = data.Familie_code;
+
+  pendingBurgerData = data;
+  if (typeof confirmDialog.showModal === 'function') {
+    confirmDialog.showModal();
+  } 
+});
+
+// Annuleren
+cancelAddBtn?.addEventListener('click', () => {
+  pendingBurgerData = null;
+  confirmDialog.close();
+});
+
+// Bevestigen
+confirmAddBtn?.addEventListener('click', e => {
+    e.preventDefault();
+  if (!pendingBurgerData) return confirmDialog.close();
+  confirmAddBtn.disabled = true;
+
+  doCreateBurger(pendingBurgerData)
+    .finally(() => {
+      confirmAddBtn.disabled = false;
+      pendingBurgerData = null;
+      confirmDialog.close();
+    });
+});
+
+function doCreateBurger(data) {
+  return fetch('/api/burgers', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -51,8 +102,13 @@ form.addEventListener('submit', e => {
     } else {
       alert('Fout: ' + (result.error || 'Onbekend probleem'));
     }
+  })
+  .catch(err => {
+    alert('Er ging iets mis bij het opslaan.');
+    console.error(err);
   });
-});
+}
+
 
 // Burger verwijderen
 function deleteBurger(id) {
@@ -163,3 +219,4 @@ kindForm.addEventListener('submit', e => {
 });
 
 loadBurgers();
+
