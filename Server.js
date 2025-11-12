@@ -71,6 +71,27 @@ app.delete('/api/burgers/:id', (req, res) => {
   });
 });
 
+// Alle huwelijken ophalen
+app.get('/api/huwelijken', (req, res) => {
+  const sql = `
+    SELECT 
+      h.huwelijk_id,
+      CONCAT(b1.Voornaam, ' ', b1.Achternaam) AS persoon1,
+      CONCAT(b2.Voornaam, ' ', b2.Achternaam) AS persoon2,
+      h.datum,
+      h.familie_code
+    FROM huwelijken h
+    JOIN burgers b1 ON h.partner1_id = b1.burger_id
+    JOIN burgers b2 ON h.partner2_id = b2.burger_id
+    ORDER BY h.huwelijk_id DESC;
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
 // Huwelijk registreren met inteeltcontrole
 app.post('/api/huwelijk', (req, res) => {
   const { partner1_id, partner2_id, datum, force } = req.body;
@@ -139,6 +160,28 @@ app.post('/api/huwelijk', (req, res) => {
   );
 });
 
+// Alle kinderen ophalen
+app.get('/api/kinderen', (req, res) => {
+  const sql = `
+    SELECT 
+      k.Kind_id,
+      k.Voornaam,
+      k.Achternaam,
+      k.Geboortedatum,
+      k.Familie_code,
+      CONCAT(b1.Voornaam, ' ', b1.Achternaam) AS Ouder1,
+      CONCAT(b2.Voornaam, ' ', b2.Achternaam) AS Ouder2
+    FROM kinderen k
+    JOIN burgers b1 ON k.Ouder1_id = b1.Burger_id
+    JOIN burgers b2 ON k.Ouder2_id = b2.Burger_id
+    ORDER BY k.Kind_id DESC;
+  `;
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
 // Kind registreren
 app.post('/api/kind', (req, res) => {
   const { ouder1_id, ouder2_id, voornaam, achternaam, geboortedatum } = req.body;
@@ -189,4 +232,3 @@ app.get('/Ambtenaar-kind', (req, res) =>  res.sendFile(path.join(__dirname, 'pub
 app.get('/', (req, res) => res.send('<a href="/Burger">Burger</a> | <a href="/Ambtenaar/start">Ambtenaar</a>'));
 
 app.listen(port, () => console.log(`Server draait op http://localhost:${port}`));
-

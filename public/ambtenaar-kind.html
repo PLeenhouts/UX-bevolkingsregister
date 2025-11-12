@@ -21,14 +21,25 @@
    <div class="grid">
      <section class="panel left">
        <h2>Invoerveld</h2>
-       <p class="lead">Hier komt straks het formulier om een nieuwe kind toe te voegen.</p>
-     </section>
- 
-     <aside class="panel right">
-       <h2>Overzichtsveld</h2>
-     </aside>
-   </div>
- 
- </div>
+       <p class="lead"><h2>Kind registreren</h2>
+<form id="KindForm">
+  <input type="number" name="ouder1_id" placeholder="Ouder 1 ID" required>
+  <input type="number" name="ouder2_id" placeholder="Ouder 2 ID" required>
+  <input type="text" name="voornaam" placeholder="Voornaam kind" required>
+  <input type="text" name="achternaam" placeholder="Achternaam kind" required>
+  <input type="date" name="geboortedatum" required>
+  <button type="submit">Registreer kind</button>
+</form></p>
+      </section>
+
+<aside class="panel right">
+  <h2>Overzicht – Kinderen</h2>
+  <ul id="Kinderen"></ul>
+</aside>
+    </div>
+
+  </div>
+
+  <script src="/js/ambtenaar-kind.js"></script>
 </body>
 </html>
